@@ -40,7 +40,7 @@ The owner shared a sample page to show the look they want. **Follow its look, ad
 - **No online payment for now:** no UPI or card payment. After ordering, the customer sees an order page that updates live (Received, Being made, Ready).
 - **Our baristas** section (`client/src/components/Team.jsx`): a statement about the staff, signed "Ranjith, owner of Cafflora" (drafted by Claude, 2026-11-07; the owner should check the wording). Three staff photos go in `client/public/images/staff/barista-1.jpg` to `-3.jpg` (900x1200); the row appears once all three exist.
 - **Reviews** (`/api/reviews`, `client/src/components/Reviews.jsx`): only real reviews. A guest can post one review (1 to 5 stars, up to 400 characters) after their first order, and can update it. Names show as first name and last initial. Staff can hide a review from the page. Never add made-up reviews.
-- **Staff page** (`/staff`): incoming orders in three columns. Only Google accounts listed in `STAFF_EMAILS` can open it (default chosen; owner hasn't confirmed).
+- **Staff page** (`/staff`): incoming orders in three columns. Only Google accounts listed in `STAFF_EMAILS` can open it (currently `ranjithambati79@gmail.com`, confirmed by the owner 2026-11-08).
 
 ## Tech stack
 - **Frontend:** React 19 + Vite, plain CSS (`client/src/styles.css`), React Router.
@@ -91,7 +91,7 @@ The owner shared a sample page to show the look they want. **Follow its look, ad
 - [ ] Opening hours, exact address and phone number for "Visit us"
 - [ ] Figma: owner asked to use Figma during development. Next step: put the designed pages into a Figma file.
 - [x] Hosting (owner agreed, 2026-11-08): Render web service in Singapore on the always-on "starter" plan, with MongoDB Atlas in Mumbai. Set up by `render.yaml` (Node 22 pinned in `package.json`); steps in README "Put it online". Code is on GitHub (2026-11-08): https://github.com/Ranjith-kumar-reddy/cafflora-website, **private** (it was public for a few minutes on 2026-11-08; the owner then asked for it to be private while the website stays public, with no forks made). Render deploys from the private repo. Commits use the GitHub noreply email. Still to do: owner creates the Atlas and Render accounts, choose and buy a domain, add it to the Google OAuth origins and set the consent screen to "In production".
-- [ ] Staff accounts: `STAFF_EMAILS` is `ranjithambati79@gmail.com`, but the Google Cloud project is under `ranjithambati064@gmail.com`. Confirm which accounts should open `/staff` before setting it on Render.
+- [x] Staff accounts (owner confirmed, 2026-11-08): `STAFF_EMAILS=ranjithambati79@gmail.com`, locally and on Render. The Google Cloud project being under a different account (`ranjithambati064@gmail.com`) is fine; it doesn't limit who can sign in.
 - [ ] Discount of 2–3%: the owner mentioned it along with the design of the comments (reviews), 2026-11-07. What it's for, the exact rate and the design aren't clear yet.
 
 ## Working rules
