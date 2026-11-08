@@ -239,9 +239,49 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 }
 .account-menu a:hover, .account-menu button:hover { background: rgba(229, 138, 43, 0.1); }
 
+/* Phones and tablets: the section links open from a button into a panel under the header. */
+.sections { display: none; }
+.sections-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding: 10px var(--gutter) 18px;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  background: rgba(13, 9, 7, 0.97);
+  border-bottom: 1px solid var(--line-strong);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+  max-height: calc(100svh - 64px);
+  overflow-y: auto;
+  animation: sections-in 0.25s ease-out;
+}
+.sections-menu a {
+  width: min(320px, 100%);
+  padding: 14px 12px;
+  border-radius: 12px;
+  color: var(--cream);
+  font-size: 1.0625rem;
+  text-align: center;
+  text-decoration: none;
+}
+.sections-menu a:hover { background: rgba(229, 138, 43, 0.1); }
+@keyframes sections-in { from { opacity: 0; transform: translateY(-8px); } }
+/* Phones held sideways: the links sit in centred rows so the panel stays short. */
+@media (max-height: 480px) {
+  .sections-menu { display: flex; flex-wrap: wrap; justify-content: center; }
+  .sections-menu a { width: auto; padding: 12px 18px; }
+}
+/* The narrowest phones: the round logo alone, so the header buttons keep their room. */
+@media (max-width: 399px) {
+  .wordmark { display: none; }
+}
+
 @media (max-width: 920px) {
   .nav-links { display: none; }
   .nav-inner { grid-template-columns: 1fr auto; height: 64px; }
+  .sections { display: block; }
 }
 
 /* ---------- Sign-in ---------- */
@@ -624,6 +664,7 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .review-name { color: var(--muted); font-size: 0.9375rem; }
 .review-hide { border: 0; background: none; color: var(--muted); font-size: 0.8125rem; text-decoration: underline; cursor: pointer; }
 .review-hide:hover { color: var(--cream); }
+@media (pointer: coarse) { .review-hide { min-height: 44px; padding: 0 12px; } }
 .review-note { text-align: center; color: var(--muted); }
 .review-form { max-width: 560px; margin: 0 auto; padding: clamp(24px, 4vw, 36px); display: grid; gap: 18px; }
 .review-form h3 { font-size: 1.3rem; text-align: center; }

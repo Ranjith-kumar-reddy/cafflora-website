@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
 import { useCart } from '../cart.jsx';
-import { BagIcon } from './Icons.jsx';
+import { BagIcon, CloseIcon, MenuIcon } from './Icons.jsx';
 import Logo from './Logo.jsx';
 
 const SECTIONS = [
@@ -34,6 +34,7 @@ export default function Nav({ user }) {
         </nav>
 
         <div className="nav-actions">
+          <SectionsMenu />
           <button type="button" className="icon-btn" onClick={() => setOpen(true)} aria-label={orderLabel}>
             <BagIcon />
             {count > 0 && <span className="badge" aria-hidden="true">{count}</span>}
@@ -45,6 +46,58 @@ export default function Nav({ user }) {
         </div>
       </div>
     </header>
+  );
+}
+
+// Phones and tablets: the section links move into a panel under the header.
+function SectionsMenu() {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  const { key } = useLocation();
+
+  // Close after following a link (each navigation gets a new location key).
+  useEffect(() => {
+    setOpen(false);
+  }, [key]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onPointerDown = (event) => {
+      if (!ref.current?.contains(event.target)) setOpen(false);
+    };
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div className="sections" ref={ref}>
+      <button
+        type="button"
+        className="icon-btn sections-btn"
+        aria-expanded={open}
+        aria-controls="sections-menu"
+        aria-label={open ? 'Close the page sections' : 'Open the page sections'}
+        onClick={() => setOpen((value) => !value)}
+      >
+        {open ? <CloseIcon /> : <MenuIcon />}
+      </button>
+      {open && (
+        <nav id="sections-menu" className="sections-menu" aria-label="Sections">
+          {SECTIONS.map((section) => (
+            <Link key={section.hash} to={{ pathname: '/', hash: section.hash }} onClick={() => setOpen(false)}>
+              {section.label}
+            </Link>
+          ))}
+        </nav>
+      )}
+    </div>
   );
 }
 
