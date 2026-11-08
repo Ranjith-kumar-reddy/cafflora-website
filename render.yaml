@@ -6,9 +6,9 @@ services:
     name: cafflora
     runtime: node
     region: singapore
-    # "starter" stays on all the time. The free plan sleeps when idle, so the first
-    # visitor after a quiet spell waits close to a minute.
-    plan: starter
+    # Free plan (owner's choice, no payment). It sleeps after 15 minutes without visitors,
+    # so the next visitor waits close to a minute. Change to "starter" to keep it always on.
+    plan: free
     # Vite is a dev dependency, so the build has to install dev dependencies too.
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
