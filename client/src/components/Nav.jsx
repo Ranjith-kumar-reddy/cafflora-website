@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
 import { useCart } from '../cart.jsx';
 import { BagIcon } from './Icons.jsx';
@@ -15,6 +15,8 @@ const SECTIONS = [
 
 export default function Nav({ user }) {
   const { count, setOpen } = useCart();
+  const { pathname, search } = useLocation();
+  const signInLink = `/signin?next=${encodeURIComponent(pathname === '/signin' ? '/' : pathname + search)}`;
   const orderLabel = count ? `Your order, ${count} ${count === 1 ? 'item' : 'items'}` : 'Your order, empty';
 
   return (
@@ -36,7 +38,10 @@ export default function Nav({ user }) {
             <BagIcon />
             {count > 0 && <span className="badge" aria-hidden="true">{count}</span>}
           </button>
-          <AccountMenu user={user} />
+          {user && <AccountMenu user={user} />}
+          {user === null && pathname !== '/signin' && (
+            <Link className="btn btn-outline btn-small nav-signin" to={signInLink}>Sign in</Link>
+          )}
         </div>
       </div>
     </header>

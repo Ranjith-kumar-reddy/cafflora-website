@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { usePrefersReducedMotion } from '../hooks.js';
 import Logo from './Logo.jsx';
 
-// The title card shown once, right after signing in. Letterbox bars close in,
+// The title card shown once per visit, when the site first opens. Letterbox bars close in,
 // the badge and greeting appear while the 3D camera glides forward, then it all lifts away.
 export default function Welcome({ name, onDone }) {
   const reduced = usePrefersReducedMotion();

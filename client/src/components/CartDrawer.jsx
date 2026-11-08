@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api.js';
+import { useAuth } from '../auth.jsx';
 import { useCart } from '../cart.jsx';
 import { formatOrderNumber, formatPrice } from '../format.js';
 import { CloseIcon, MinusIcon, PlusIcon } from './Icons.jsx';
+import SignInPanel from './SignInPanel.jsx';
 
 const FOCUSABLE = 'button:not([disabled]), select, textarea, input, a[href]';
 
 export default function CartDrawer({ tableCount }) {
   const { lines, setQty, clear, total, isOpen, setOpen, scannedTable, showToast } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [type, setType] = useState(scannedTable ? 'table' : 'pickup');
   const [table, setTable] = useState(scannedTable ? String(scannedTable) : '');
@@ -176,9 +179,16 @@ export default function CartDrawer({ tableCount }) {
               </div>
               <p className="field-hint">You pay at the café. There's no online payment.</p>
               {error && <p className="form-error" role="alert">{error}</p>}
-              <button type="submit" className="btn btn-primary btn-block" disabled={submitting}>
-                {submitting ? 'Placing order…' : 'Place order'}
-              </button>
+              {user === null ? (
+                <div className="drawer-signin">
+                  <p className="drawer-signin-text">Sign in with Google to place your order. Your order stays here.</p>
+                  {isOpen && <SignInPanel />}
+                </div>
+              ) : (
+                <button type="submit" className="btn btn-primary btn-block" disabled={submitting || user === undefined}>
+                  {submitting ? 'Placing order…' : 'Place order'}
+                </button>
+              )}
             </div>
           </form>
         )}

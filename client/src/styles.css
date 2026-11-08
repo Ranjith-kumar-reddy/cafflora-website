@@ -246,6 +246,11 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 
 /* ---------- Sign-in ---------- */
 .gate { min-height: 100svh; display: grid; place-items: center; padding: 40px var(--gutter); }
+.gate-page { padding-top: 112px; padding-bottom: 64px; }
+.signin-panel { width: 100%; display: grid; justify-items: center; gap: 14px; }
+.nav-signin { white-space: nowrap; }
+.drawer-signin { display: grid; justify-items: center; gap: 12px; text-align: center; }
+.drawer-signin-text { color: var(--cream); font-size: 0.9375rem; }
 .gate-card {
   width: min(440px, 100%);
   padding: clamp(32px, 6vw, 52px) clamp(24px, 5vw, 44px);

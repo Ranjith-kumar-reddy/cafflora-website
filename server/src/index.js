@@ -19,11 +19,12 @@ app.use(cookieParser());
 app.use(readSession);
 
 app.use('/api/auth', authRouter);
-app.get('/api/menu', requireUser, (_req, res) => {
+// The menu and reviews are open to everyone; ordering and posting a review need Google sign-in.
+app.get('/api/menu', (_req, res) => {
   res.json({ categories: CATEGORIES, items: menuWithPhotos(), tableCount: config.tableCount });
 });
 app.use('/api/orders', requireUser, ordersRouter);
-app.use('/api/reviews', requireUser, reviewsRouter);
+app.use('/api/reviews', reviewsRouter);
 app.use('/api/staff/reviews', requireStaff, reviewsStaffRouter);
 app.use('/api/staff', requireStaff, staffRouter);
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found' }));

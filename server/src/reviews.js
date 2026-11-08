@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import mongoose from 'mongoose';
+import { requireUser } from './auth.js';
 import { Order } from './models/Order.js';
 import { Review, displayNameFor } from './models/Review.js';
 
@@ -8,13 +9,15 @@ const MAX_TEXT = 400;
 
 export const reviewsRouter = Router();
 
-// Latest visible reviews, the average rating, and whether this guest can review.
+// Latest visible reviews and the average rating, open to everyone.
+// For a signed-in guest, also their own review and whether they can review.
 reviewsRouter.get('/', async (req, res) => {
+  const sub = req.user?.sub;
   const [reviews, stats, mine, hasOrdered] = await Promise.all([
     Review.find({ hidden: false }).sort({ updatedAt: -1 }).limit(SHOWN),
     Review.aggregate([{ $match: { hidden: false } }, { $group: { _id: null, average: { $avg: '$rating' }, count: { $sum: 1 } } }]),
-    Review.findOne({ 'user.googleId': req.user.sub }),
-    Order.exists({ 'user.googleId': req.user.sub }),
+    sub ? Review.findOne({ 'user.googleId': sub }) : null,
+    sub ? Order.exists({ 'user.googleId': sub }) : null,
   ]);
   res.json({
     reviews,
@@ -26,7 +29,7 @@ reviewsRouter.get('/', async (req, res) => {
 });
 
 // Only guests who have ordered can leave a review, so every review comes from a real customer.
-reviewsRouter.post('/', async (req, res) => {
+reviewsRouter.post('/', requireUser, async (req, res) => {
   const rating = Number(req.body?.rating);
   const text = typeof req.body?.text === 'string' ? req.body.text.trim() : '';
   if (!Number.isInteger(rating) || rating < 1 || rating > 5) return res.status(400).json({ error: 'Choose a rating from 1 to 5 stars.' });

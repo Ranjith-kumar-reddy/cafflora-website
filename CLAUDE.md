@@ -33,8 +33,8 @@ The owner shared a sample page to show the look they want. **Follow its look, ad
 
 ## Features
 - **Sign-in:** **Google accounts only**, with no email or password option.
-- **Sign-in comes first (confirmed):** the whole site is behind sign-in. Visitors sign in with Google, see a welcome title card, and then the cinematic website opens.
-- **In-app browsers** (2026-11-08, for links shared on LinkedIn): Google blocks sign-in inside apps such as LinkedIn, Instagram and Facebook, so the sign-in page shows "Open Cafflora in your browser" there, with "Open in Chrome" on Android and "Copy link" everywhere (`client/src/components/InAppBrowserNotice.jsx`).
+- **The site opens right away (owner's choice, 2026-11-08, replacing "sign-in comes first"):** anyone who clicks the link sees the welcome title card (once per browser session) and then the whole website, menu and reviews included, with no sign-in. Google sign-in is only asked for when placing an order (inside the order drawer, and the order stays), posting a review, and on My orders, an order page and `/staff`. The nav shows "Sign in" (`/signin?next=…`) for visitors. The API serves `/api/menu` and `GET /api/reviews` to everyone; orders, posting reviews and staff routes still need a session.
+- **In-app browsers** (2026-11-08, for links shared on LinkedIn): Google blocks sign-in inside apps such as LinkedIn, Instagram and Facebook. Visitors there can browse everything; where sign-in is asked for, they see "Open Cafflora in your browser", with "Open in Chrome" on Android and "Copy link" everywhere (`client/src/components/InAppBrowserNotice.jsx`, shown by `SignInPanel.jsx`).
 - **Ordering API:** customers place coffee orders through our own backend API, in two ways:
   - **Table order:** the table number comes from a QR code link (`/?table=4`) or the customer picks it.
   - **Online order:** pickup at the counter (default chosen; delivery not built).
