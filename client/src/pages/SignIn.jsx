@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { api } from '../api.js';
 import { useAuth } from '../auth.jsx';
 import GoogleButton from '../components/GoogleButton.jsx';
+import InAppBrowserNotice, { detectInAppBrowser } from '../components/InAppBrowserNotice.jsx';
 import Logo from '../components/Logo.jsx';
+
+const inAppBrowser = detectInAppBrowser();
 
 export default function SignIn({ onSignedIn }) {
   const { setUser } = useAuth();
@@ -34,6 +37,8 @@ export default function SignIn({ onSignedIn }) {
         <h1 className="gate-title">Cafflora</h1>
         <p className="gate-place">Whitefield, Bengaluru</p>
         <p className="gate-text">Sign in with your Google account to see our menu and order your coffee.</p>
+
+        {inAppBrowser && <InAppBrowserNotice app={inAppBrowser} />}
 
         {config?.googleClientId && (
           <GoogleButton

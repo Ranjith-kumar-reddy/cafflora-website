@@ -34,6 +34,7 @@ The owner shared a sample page to show the look they want. **Follow its look, ad
 ## Features
 - **Sign-in:** **Google accounts only**, with no email or password option.
 - **Sign-in comes first (confirmed):** the whole site is behind sign-in. Visitors sign in with Google, see a welcome title card, and then the cinematic website opens.
+- **In-app browsers** (2026-11-08, for links shared on LinkedIn): Google blocks sign-in inside apps such as LinkedIn, Instagram and Facebook, so the sign-in page shows "Open Cafflora in your browser" there, with "Open in Chrome" on Android and "Copy link" everywhere (`client/src/components/InAppBrowserNotice.jsx`).
 - **Ordering API:** customers place coffee orders through our own backend API, in two ways:
   - **Table order:** the table number comes from a QR code link (`/?table=4`) or the customer picks it.
   - **Online order:** pickup at the counter (default chosen; delivery not built).

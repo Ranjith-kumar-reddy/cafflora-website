@@ -262,6 +262,24 @@ fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
 .dev-login { display: grid; justify-items: center; gap: 10px; margin-top: 8px; padding-top: 18px; border-top: 1px solid var(--line); width: 100%; }
 .dev-note { font-size: 0.8125rem; color: var(--muted); max-width: 38ch; }
 
+/* Shown inside apps' built-in browsers (LinkedIn, Instagram...), where Google blocks sign-in */
+.inapp {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 18px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  background: rgba(229, 138, 43, 0.08);
+}
+.inapp-title { color: var(--cream); font-weight: 600; }
+.inapp-text { color: var(--muted); font-size: 0.9375rem; max-width: 34ch; }
+.inapp-text:empty { display: none; }
+.inapp-url { color: var(--gold); font-size: 0.875rem; user-select: all; -webkit-user-select: all; }
+.inapp-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+
 /* ---------- Welcome title card ---------- */
 .welcome {
   position: fixed;
