@@ -18,6 +18,12 @@ app.use(express.json({ limit: '20kb' }));
 app.use(cookieParser());
 app.use(readSession);
 
+// Answers right away without touching the database, so uptime checks and Render can tell the server is up.
+app.get('/api/health', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.json({ ok: true, db: mongoose.connection.readyState === 1 ? 'up' : 'down' });
+});
+
 app.use('/api/auth', authRouter);
 // The menu and reviews are open to everyone; ordering and posting a review need Google sign-in.
 app.get('/api/menu', (_req, res) => {
@@ -51,7 +57,9 @@ try {
   mongoose.set('strictQuery', true);
   await mongoose.connect(config.mongoUri, { serverSelectionTimeoutMS: 5000 });
 } catch (err) {
-  console.error(`Can't reach MongoDB at ${config.mongoUri}. Check that the MongoDB service is running.`);
+  // Never log the user name or password inside the address.
+  const where = config.mongoUri.replace(/\/\/[^@/]*@/, '//');
+  console.error(`Can't reach MongoDB at ${where}. Check that the MongoDB service is running.`);
   console.error(err.message);
   process.exit(1);
 }
