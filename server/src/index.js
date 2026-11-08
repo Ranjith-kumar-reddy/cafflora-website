@@ -68,4 +68,22 @@ app.listen(config.port, () => {
   console.log(`Cafflora API running on http://localhost:${config.port}`);
   if (!config.googleClientId) console.log('Google sign-in is off: set GOOGLE_CLIENT_ID in server/.env.');
   if (config.devLogin) console.log('Preview login is on (ALLOW_DEV_LOGIN=true).');
+  if (config.keepAwakeUrl) keepAwake(config.keepAwakeUrl);
 });
+
+// Render's free plan puts the site to sleep after 15 minutes without visitors, and this service
+// didn't always wake up again (2026-11-08). A visit to our own public address every 5 minutes
+// goes through Render like any visitor's, so the site stays awake and opens at once.
+function keepAwake(publicUrl) {
+  const healthUrl = new URL('/api/health', publicUrl);
+  const visit = async () => {
+    try {
+      const res = await fetch(healthUrl, { signal: AbortSignal.timeout(30_000) });
+      if (!res.ok) console.error(`Keep-awake visit got HTTP ${res.status}.`);
+    } catch (err) {
+      console.error(`Keep-awake visit failed: ${err.message}`);
+    }
+  };
+  setInterval(visit, 5 * 60 * 1000);
+  console.log(`Keeping the site awake: visiting ${healthUrl} every 5 minutes.`);
+}

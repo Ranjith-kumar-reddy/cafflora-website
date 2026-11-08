@@ -19,6 +19,9 @@ export const config = {
   tableCount: Number(process.env.TABLE_COUNT) || 12,
   // The preview login can never be switched on in production.
   devLogin: !isProduction && process.env.ALLOW_DEV_LOGIN === 'true',
+  // Render sets RENDER_EXTERNAL_URL to the site's public address. When it's there, the server
+  // visits itself so the free plan never puts it to sleep. KEEP_AWAKE=false turns this off.
+  keepAwakeUrl: process.env.KEEP_AWAKE === 'false' ? '' : (process.env.RENDER_EXTERNAL_URL || '').trim(),
 };
 
 if (config.sessionSecret.length < 32) {
