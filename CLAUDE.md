@@ -88,7 +88,7 @@ The owner shared a sample page to show the look they want. **Follow its look, ad
 
 ## Still to decide
 - [ ] Owner to review menu items and prices in `server/src/menu.js`
-- [x] Google OAuth client ID created by the owner (Google Cloud project `cafflora`; account in `CLAUDE.local.md`) and set in `server/.env` (2026-11-07). Authorized origins: http://localhost:5173 and http://localhost:4000. Add the real domain before going live.
+- [ ] Google OAuth client (2026-11-08): the first client (`172277588184-…`, 2026-11-07) gave "origin_mismatch" on the live site and the owner couldn't reach it, so the owner made a new **Web application** client in project `cafflora`: `836070795610-7ea1qvb3ro3c74t6oco5t4g28aphnvto.apps.googleusercontent.com` (client IDs are public; never put its client secret anywhere, the site doesn't use it). It's set in `server/.env` and in Render's `GOOGLE_CLIENT_ID`; Render only uses it after the next deploy. Its Authorized JavaScript origins so far: `http://localhost:4000` only. Still to add: `https://cafflora.onrender.com`, `http://localhost` and `http://localhost:5173` (5173 was put under redirect URIs by mistake), then publish the consent screen ("In production"). Phones use this same Web client; no Android client is needed.
 - [ ] Photos: owner to save the images as files in `photos-inbox/` so they can be added
 - [ ] Confirm removing "book a tasting", and that online orders are pickup only
 - [ ] Opening hours, exact address and phone number for "Visit us"
